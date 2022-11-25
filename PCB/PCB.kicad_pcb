@@ -35616,7 +35616,6 @@
   (gr_text "TX" (at 30.48 45.72) (layer "F.SilkS") (tstamp fd1bbaf8-024d-49a2-badc-8a16764c1a83)
     (effects (font (size 1 1) (thickness 0.15)))
   )
-  (target plus (at 102.5 127.5) (size 5) (width 0.1) (layer "Edge.Cuts") (tstamp 355523f7-41ef-4fd9-aa16-a99c7344c7c0))
 
   (segment (start 66.7125 88.4) (end 67.42452 87.68798) (width 0.3) (layer "F.Cu") (net 1) (tstamp 00f9f5d0-6133-453f-b026-b40fff95b833))
   (segment (start 50.75 63.324639) (end 51.574639 62.5) (width 0.3) (layer "F.Cu") (net 1) (tstamp 018e0ae4-85d4-44b4-8b97-d71076666440))
