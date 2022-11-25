@@ -3686,7 +3686,7 @@
     (uuid e8263da8-e2fb-43a9-a299-174a84b3346a)
     (property "Reference" "SW2" (id 0) (at 185.42 28.6725 0))
     (property "Value" "SW_Push" (id 1) (at 185.42 31.4476 0))
-    (property "Footprint" "Button_Switch_SMD:SW_Push_1P1T_NO_6x6mm_H9.5mm" (id 2) (at 185.42 30.48 0)
+    (property "Footprint" "Button_Switch_SMD:SW_Push_1P1T_NO_CK_KSC6xxJ" (id 2) (at 185.42 30.48 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 185.42 30.48 0)
@@ -4173,7 +4173,7 @@
       (reference "SW1") (unit 1) (value "PWR_SW") (footprint "Button_Switch_SMD:SW_SPDT_CK-JS102011SAQN")
     )
     (path "/e8263da8-e2fb-43a9-a299-174a84b3346a"
-      (reference "SW2") (unit 1) (value "SW_Push") (footprint "Button_Switch_SMD:SW_Push_1P1T_NO_6x6mm_H9.5mm")
+      (reference "SW2") (unit 1) (value "SW_Push") (footprint "Button_Switch_SMD:SW_Push_1P1T_NO_CK_KSC6xxJ")
     )
     (path "/fdb8ea48-5fca-4d7c-94ba-c5c2ee68cff2"
       (reference "TP1") (unit 1) (value "Reset") (footprint "TestPoint:TestPoint_Pad_D2.0mm")
