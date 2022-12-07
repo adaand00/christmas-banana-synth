@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 int keys[] = {
-  PIN_PC2, PIN_PC2, PIN_PC0, PIN_PB5, PIN_PB4,
+  PIN_PC2, PIN_PC1, PIN_PC0, PIN_PB5, PIN_PB4,
   PIN_PB3, PIN_PB2, PIN_PB1, PIN_PB0, PIN_PA7, PIN_PA6, PIN_PA5,
   PIN_PF2, PIN_PF1, PIN_PF0, PIN_PE3, PIN_PE2,
   PIN_PE1, PIN_PE0, PIN_PD7, PIN_PD6, PIN_PD5, PIN_PD4, PIN_PD3
@@ -25,25 +25,35 @@ unsigned int freqz[] = {
 
 void shift_clock() {
   digitalWrite(SHIFT_CLOCK_PIN,   HIGH);
-  digitalWrite(STORAGE_CLOCK_PIN, HIGH);
   //digitalWrite probably has enough delay to clock correctly 
   digitalWrite(SHIFT_CLOCK_PIN,   LOW);
+}
+
+void LED_show() {
   digitalWrite(STORAGE_CLOCK_PIN, LOW);
+  delay(1);
+  digitalWrite(STORAGE_CLOCK_PIN, HIGH);
 }
 
 void LED_clear() {
   digitalWrite(SHIFT_NRST_PIN, LOW);
+  delay(1);
   digitalWrite(SHIFT_NRST_PIN, HIGH);
+
+  LED_show();
 }
 
 void LED_on(int key) {
   LED_clear();
   digitalWrite(DATA_PIN, HIGH);
   shift_clock();
+  digitalWrite(DATA_PIN, LOW);
 
   for (int i = 0; i < key; i++) {
     shift_clock();
   }
+
+  LED_show();
 }
 
 int readKeys(){
@@ -81,10 +91,11 @@ void setup() {
   LED_clear();
   digitalWrite(OE_PIN, LOW);
 
-  // test all leds
+  // test all leds and buzzer
   for (int i = 0; i < KEY_COUNT; i++) {
     LED_on(i);
-    delay(500);
+    tone(BUZZER_PIN, freqz[i]);
+    delay(100);
   }
 
   //test buzzer
@@ -103,5 +114,7 @@ void loop() {
     LED_clear();
     noTone(BUZZER_PIN);
   }
+
+  delay(20);
 
 }
