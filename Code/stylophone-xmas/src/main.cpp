@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "songs.h"
 
 int keys[] = {
   PIN_PC2, PIN_PC1, PIN_PC0, PIN_PB5, PIN_PB4,
@@ -65,6 +66,22 @@ int readKeys(){
   return -1;
 }
 
+void playSong(note_t * song, int length){
+
+  for (int i = 0; i < length; i++) {
+    if (song[i].note == 0) {
+      noTone(BUZZER_PIN);
+      delay(song[i].duration);
+      continue;
+    }
+
+    tone(BUZZER_PIN, song[i].note);
+    delay(song[i].duration);
+  }
+
+  noTone(BUZZER_PIN);
+}
+
 
 void setup() {
   // init keys as input with pullup
@@ -107,6 +124,12 @@ void loop() {
   // put your main code here, to run repeatedly:
 
   int key = readKeys();
+  int songButton = digitalRead(BUTTON_PIN);
+
+  if (songButton == LOW) {
+    playSong(songs[key], 3);
+  }
+
   if (key != -1) {
     LED_on(key);
     tone(BUZZER_PIN, freqz[key]);
