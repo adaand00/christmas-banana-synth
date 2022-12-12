@@ -14,6 +14,8 @@ unsigned int freqz[] = {
   523, 554, 587, 622, 659, 698, 739, 783, 830, 880, 932, 987
 };
 
+uint32_t waitTime = 0;
+
 #define KEY_COUNT 24
 #define BUZZER_PIN PIN_PA2
 #define BUTTON_PIN PIN_PF3
@@ -32,13 +34,11 @@ void shift_clock() {
 
 void LED_show() {
   digitalWrite(STORAGE_CLOCK_PIN, LOW);
-  delay(1);
   digitalWrite(STORAGE_CLOCK_PIN, HIGH);
 }
 
 void LED_clear() {
   digitalWrite(SHIFT_NRST_PIN, LOW);
-  delay(1);
   digitalWrite(SHIFT_NRST_PIN, HIGH);
 
   LED_show();
@@ -66,20 +66,69 @@ int readKeys(){
   return -1;
 }
 
-void playSong(note_t * song, int length){
+void playSong(const note_t * song, int length){
 
   for (int i = 0; i < length; i++) {
     if (song[i].note == 0) {
       noTone(BUZZER_PIN);
+      LED_clear();
       delay(song[i].duration);
       continue;
     }
 
-    tone(BUZZER_PIN, song[i].note);
+    uint8_t note = song[i].note-1;
+
+    tone(BUZZER_PIN, freqz[note]);
+    LED_on(note);
     delay(song[i].duration);
   }
 
   noTone(BUZZER_PIN);
+}
+
+void learnSong(const note_t * song, int length){
+
+  // start learning mode
+  for (int i = 0; i < length; i++) {
+    if(song[i].note == 0){
+      noTone(BUZZER_PIN);
+      LED_clear();
+      delay(song[i].duration);
+      continue;
+    }
+
+    uint8_t note = song[i].note-1;
+
+    // turn on LED
+    LED_on(note);
+
+    // wait for note to be played
+    while (readKeys() != note) { delay(10); }
+
+    //start LED timer
+    unsigned long start = millis();
+
+    // wait for duration note to end
+    while (millis() - start < song[i].duration)
+    {
+
+      if (readKeys() == note) {
+        tone(BUZZER_PIN, freqz[note]);
+      }else{
+        noTone(BUZZER_PIN);
+      }
+
+      delay(10);
+    }
+
+    LED_clear();
+
+    // wait for note to be released
+    while (readKeys() == note) { delay(10); }
+
+    noTone(BUZZER_PIN);
+
+  }
 }
 
 
@@ -126,18 +175,29 @@ void loop() {
   int key = readKeys();
   int songButton = digitalRead(BUTTON_PIN);
 
-  if (songButton == LOW) {
-    playSong(songs[key], 3);
-  }
+  if (key != -1 && songButton == LOW) {
+    if(key<12)
+      learnSong(songs[key], song_lengths[key]);
+    else
+      playSong(songs[key-12], song_lengths[key-12]);
 
-  if (key != -1) {
+    waitTime = 0;
+
+  } else if (key != -1) {
     LED_on(key);
     tone(BUZZER_PIN, freqz[key]);
+    waitTime = 0;
   } else {
     LED_clear();
     noTone(BUZZER_PIN);
   }
 
-  delay(20);
+  // play snippet of song after 30 seconds
+  waitTime += 10;
+  if (waitTime > 30000) {
+    playSong(songs[1], 18);
+    waitTime = 0;
+  }
 
+  delay(10);
 }
