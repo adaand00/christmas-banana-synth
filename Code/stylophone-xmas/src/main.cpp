@@ -8,7 +8,7 @@ int keys[] = {
   PIN_PE1, PIN_PE0, PIN_PD7, PIN_PD6, PIN_PD5, PIN_PD4, PIN_PD3
 };
 
-// frequencies from C4 to B6
+// frequencies from C4 to B5
 unsigned int freqz[] = {
   261, 277, 293, 311, 329, 349, 369, 391, 415, 440, 466, 493,
   523, 554, 587, 622, 659, 698, 739, 783, 830, 880, 932, 987
