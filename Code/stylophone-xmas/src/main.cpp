@@ -161,7 +161,7 @@ void setup() {
   for (int i = 0; i < KEY_COUNT; i++) {
     LED_on(i);
     tone(BUZZER_PIN, freqz[i]);
-    delay(100);
+    delay(60);
   }
 
   //test buzzer
