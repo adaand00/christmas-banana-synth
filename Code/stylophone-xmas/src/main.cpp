@@ -195,7 +195,7 @@ void loop() {
   // play snippet of song after 30 seconds
   waitTime += 10;
   if (waitTime > 30000) {
-    playSong(songs[1], 18);
+    playSong(songs[4], 10);
     waitTime = 0;
   }
 
